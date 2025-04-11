@@ -1,66 +1,90 @@
-📌 This repository compares Fourier Neural Operators (FNOs) and U-Nets as deep learning surrogates for accelerating simulations of 2D reactive transport systems involving radioactive decay chains. The models are conditioned on physical parameters (vₓ, dispersion D, decay rates k_P, k_D, inlet concentration P_in) to predict spatiotemporal evolution of parent (P) and daughter (D) radionuclides.
+ ## Overview
 
-Key Features:
+This repository compares Fourier Neural Operators (FNOs) and U-Nets as deep learning surrogates for accelerating simulations of 2D reactive transport systems involving radioactive decay chains. The models are conditioned on physical parameters (vₓ, dispersion D, decay rates k_P, k_D, inlet concentration P_in) to predict spatiotemporal evolution of parent (P) and daughter (D) radionuclides.
 
-     GPU-accelerated ground truth generation using Finite Difference Method (CuPy).
+## Key Features
 
-     Parameter-aware architectures: FNO and U-Net conditioned on 5 physical parameters.
+- GPU-accelerated ground truth generation using Finite Difference Method (CuPy).
 
-     Benchmarking: Single-step accuracy, long-term rollouts, and mass conservation.
+- Parameter-aware architectures: FNO and U-Net conditioned on 5 physical parameters.
 
-     Generalization tests: Interpolation to unseen parameter combinations.
+- Benchmarking: Single-step accuracy, long-term rollouts, and mass conservation.
 
-🔍 Problem Statement
+- Generalization tests: Interpolation to unseen parameter combinations.
+
+## Problem Statement
 
 Reactive transport models (RTMs) for radionuclide decay chains are computationally expensive. This project explores neural surrogates to replace traditional solvers, enabling:
 
-    Fast uncertainty quantification
+- Fast uncertainty quantification
+- Inverse parameter estimation
+- Real-time scenario analysis
 
-    Inverse parameter estimation
 
-    Real-time scenario analysis
-
-    Governing PDEs:
+### Governing PDEs:
 
     ∂P/∂t = D∇²P − vₓ∂P/∂x − k_P P  
     ∂D/∂t = D∇²D − vₓ∂D/∂x + k_P P − k_D D  
 
-🚀 Methodology
+## Methodology
 
-1. Data Generation
+### 1. Data Generation
 
-    Numerical solver: Explicit Euler FDM on GPU (CuPy).
+   Numerical solver: Explicit Euler FDM on GPU (CuPy).
 
-    Parameters sampled: Latin Hypercube Sampling (LHS) over ranges:
-    Parameter	Range
-    vₓ	[0.1, 1.0]
-    D	[0.001, 0.01]
-    k_P	[0.05, 0.5]
-    k_D	[0.01, 0.1]
-    P_in	[0.5, 2.0]
-
-2. Model Architectures
-      Model	Architecture	Inputs	Outputs
-      FNO	4-layer, 32 modes	[P(t), D(t), vₓ, D, k_P, k_D, P_in]	[P(t+Δt), D(t+Δt)]
-      U-Net	4 down/up blocks	Same as FNO	Same as FNO
+   Parameters sampled: Latin Hypercube Sampling (LHS) over ranges:
    
-4. Training
+   | Parameter       | Range         | Units  |
+   |-----------------|---------------|--------|
+   | Velocity (`vₓ`) | 0.1 – 1.0     | L/T    |
+   | Dispersion (`D`) | 0.001 – 0.01  | L²/T   |
+   | Decay rate (`k_P`)| 0.05 – 0.5   | 1/T    |
+   | Decay rate (`k_D`)| 0.01 – 0.1   | 1/T    |
+   | Inlet conc. (`P_in`)| 0.5 – 2.0  | M/L³   |
 
-    Loss: Relative L₂ error
-    Optimizer: AdamW (lr=1e-3, weight decay=1e-4)
-    Scheduler: StepLR (γ=0.5 every 5 epochs)
+### 3. Model Architectures
 
-📊 Results
+| Model | Architecture      | Inputs                                | Outputs               |
+|-------|-------------------|----------------------------------------|------------------------|
+| FNO   | 4-layer, 32 modes | [P(t), D(t), vₓ, D, k_P, k_D, P_in]   | [P(t+Δt), D(t+Δt)]     |
+| U-Net | 4 down/up blocks  | Same as FNO                            | Same as FNO            |
 
-    (Example findings – replace with your actual results)
-    Metric	FNO	U-Net
-    Single-step test error	0.8%	1.2%
-    100-step rollout error	3.5%	12.7%
-    Mass conservation error	<1%	~5%
-    Training time (30 epochs)	2.1 hrs	3.4 hrs
+   
+### 5. Training
 
-Key Observations:
+- **Loss Function**: Relative L₂ error  
+- **Optimizer**: AdamW  
+  - Learning Rate: `1e-3`  
+  - Weight Decay: `1e-4`  
+- **Learning Rate Scheduler**: StepLR  
+  - Decay Factor (γ): `0.5`  
+  - Step Size: every `5` epochs
 
-    FNO outperforms U-Net in long-term stability and parameter generalization.
+
+
+## Key Observations
+
+FNO outperforms U-Net in long-term stability and parameter generalization.
+
+
+## Requirements
+
+1. Python 3.8+
+
+2. PyTorch (>=1.10)
+
+3. CuPy (matching your CUDA version)
+
+4. NumPy
+
+5. Matplotlib
+
+6. SciPy (for LHS)
+
+7. neuraloperator (or neuralop)
+
+8. scikit-learn (for train_test_split)
+
+9. tqdm (for progress bars)
 
     
