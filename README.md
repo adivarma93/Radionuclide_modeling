@@ -12,6 +12,24 @@ This repository compares Fourier Neural Operators (FNOs) and U-Nets as deep lear
 
 - Generalization tests: Interpolation to unseen parameter combinations.
 
+## Requirements
+
+1. Python 3.8+
+
+2. PyTorch (>=1.10)
+
+3. CuPy (matching your CUDA version)
+
+4. NumPy
+
+5. Matplotlib
+
+6. SciPy (for LHS)
+
+7. neuraloperator (or neuralop)
+
+8. scikit-learn (for train_test_split)
+
 ## Problem Statement
 
 Reactive transport models (RTMs) for radionuclide decay chains are computationally expensive. This project explores neural surrogates to replace traditional solvers, enabling:
@@ -67,23 +85,7 @@ Reactive transport models (RTMs) for radionuclide decay chains are computational
 FNO outperforms U-Net in long-term stability and parameter generalization.
 
 
-## Requirements
 
-1. Python 3.8+
-
-2. PyTorch (>=1.10)
-
-3. CuPy (matching your CUDA version)
-
-4. NumPy
-
-5. Matplotlib
-
-6. SciPy (for LHS)
-
-7. neuraloperator (or neuralop)
-
-8. scikit-learn (for train_test_split)
 
 9. tqdm (for progress bars)
 
