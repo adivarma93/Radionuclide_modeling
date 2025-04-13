@@ -50,7 +50,7 @@ Reactive transport models (RTMs) for radionuclide decay chains are computational
 | U-Net | 4 down/up blocks  | Same as FNO                            | Same as FNO            |
 
    
-### 5. Training
+### 5. Training (Adjust as required)
 
 - **Loss Function**: Relative L₂ error  
 - **Optimizer**: AdamW  
