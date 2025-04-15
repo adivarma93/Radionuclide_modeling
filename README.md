@@ -87,6 +87,5 @@ FNO outperforms U-Net in long-term stability and parameter generalization.
 
 
 
-9. tqdm (for progress bars)
 
     
